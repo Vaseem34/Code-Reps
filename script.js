@@ -1,6 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. Ripple Effect ---
+    // --- 1. Custom Cursor ---
+    const cursor = document.querySelector('.cursor');
+    const follower = document.querySelector('.cursor-follower');
+    const hoverTargets = document.querySelectorAll('.hover-target, .btn, a, .feature-card');
+
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        follower.style.left = e.clientX + 'px';
+        follower.style.top = e.clientY + 'px';
+    });
+
+    hoverTargets.forEach(target => {
+        target.addEventListener('mouseenter', () => {
+            follower.classList.add('active');
+        });
+        target.addEventListener('mouseleave', () => {
+            follower.classList.remove('active');
+        });
+    });
+
+    // --- 2. Ripple Effect ---
     const rippleBtns = document.querySelectorAll('.ripple-btn');
     rippleBtns.forEach(btn => {
         btn.addEventListener('click', function (e) {
@@ -17,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- 2. Scroll Progress Bar ---
+    // --- 3. Scroll Progress Bar ---
     window.addEventListener('scroll', () => {
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -25,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.scroll-progress').style.width = scrolled + '%';
     });
 
-    // --- 3. Typing Effect ---
+    // --- 4. Typing Effect ---
     const textToType = "Build. Learn. Replicate.";
     const typeWriterElement = document.getElementById('typewriter');
     let i = 0;
@@ -38,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     setTimeout(typeWriter, 500);
 
-    // --- 4. Modal Logic ---
+    // --- 5. Modal Logic ---
     const loginBtn = document.getElementById('login-btn');
     const learnMoreBtn = document.getElementById('learn-more-btn');
     const authModal = document.getElementById('auth-modal');
@@ -76,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target == featureModal) featureModal.classList.remove('active');
     });
 
-    // --- 5. Feature Modal Logic ---
+    // --- 6. Feature Modal Logic ---
     window.openFeatureModal = function(type) {
         const title = document.getElementById('feature-title');
         const desc = document.getElementById('feature-desc');
@@ -97,10 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
         featureModal.classList.add('active');
     }
 
-    // --- 6. Scroll Animation (Staggered) ---
+    // --- 7. Scroll Animation (Staggered) ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry, index) => {
             if (entry.isIntersecting) {
+                // Add a slight delay based on index for staggered effect
                 entry.target.style.transitionDelay = `${index * 0.1}s`; 
                 entry.target.classList.add('show');
             }
@@ -108,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
 
-    // --- 7. Counter Animation ---
+    // --- 8. Counter Animation ---
     const counters = document.querySelectorAll('.counter');
     const speed = 200;
     const counterObserver = new IntersectionObserver((entries) => {
@@ -133,12 +155,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     counters.forEach(counter => counterObserver.observe(counter));
 
-    // --- 8. Mobile Menu ---
+    // --- 9. Mobile Menu ---
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
     if (hamburger) hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
 
-    // --- 9. Dark Mode ---
+    // --- 10. Dark Mode ---
     const themeToggle = document.getElementById('theme-toggle');
     if (themeToggle) {
         const themeIcon = themeToggle.querySelector('i');
