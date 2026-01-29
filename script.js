@@ -1,48 +1,157 @@
-// --- Configuration ---
-// Set the date we're counting down to.
-// Format: "Month Day, Year Hour:Minute:Second"
-const launchDate = new Date("December 31, 2026 00:00:00").getTime();
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 1. Ripple Effect ---
+    const rippleBtns = document.querySelectorAll('.ripple-btn');
+    rippleBtns.forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            let x = e.clientX - e.target.getBoundingClientRect().left;
+            let y = e.clientY - e.target.getBoundingClientRect().top;
+            let ripples = document.createElement('span');
+            ripples.classList.add('ripple');
+            ripples.style.left = x + 'px';
+            ripples.style.top = y + 'px';
+            this.appendChild(ripples);
+            setTimeout(() => {
+                ripples.remove();
+            }, 600);
+        });
+    });
 
-// --- Elements ---
-const daysElement = document.getElementById("days");
-const hoursElement = document.getElementById("hours");
-const minutesElement = document.getElementById("minutes");
-const secondsElement = document.getElementById("seconds");
-const countdownContainer = document.getElementById("countdown-timer");
-const headline = document.querySelector("h1");
+    // --- 2. Scroll Progress Bar ---
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (scrollTop / scrollHeight) * 100;
+        document.querySelector('.scroll-progress').style.width = scrolled + '%';
+    });
 
-// --- Timer Function ---
-function updateCountdown() {
-    // Get today's date and time
-    const now = new Date().getTime();
-
-    // Find the distance between now and the launch date
-    const distance = launchDate - now;
-
-    // Time calculations for days, hours, minutes and seconds
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Display the result in the respective HTML elements
-    // We use String().padStart(2, '0') to add a leading zero if the number is less than 10 (e.g., "05" instead of "5")
-    daysElement.innerHTML = String(days).padStart(2, '0');
-    hoursElement.innerHTML = String(hours).padStart(2, '0');
-    minutesElement.innerHTML = String(minutes).padStart(2, '0');
-    secondsElement.innerHTML = String(seconds).padStart(2, '0');
-
-    // If the countdown is finished, change the text and hide the timer
-    if (distance < 0) {
-        clearInterval(countdownInterval); // Stop the timer
-        headline.innerText = "We Are Live!";
-        countdownContainer.style.display = "none"; // Hide the timer elements
+    // --- 3. Typing Effect ---
+    const textToType = "Build. Learn. Replicate.";
+    const typeWriterElement = document.getElementById('typewriter');
+    let i = 0;
+    function typeWriter() {
+        if (i < textToType.length) {
+            typeWriterElement.innerHTML += textToType.charAt(i);
+            i++;
+            setTimeout(typeWriter, 100); 
+        }
     }
-}
+    setTimeout(typeWriter, 500);
 
-// --- Initialization ---
-// Update the countdown every 1 second (1000 milliseconds)
-const countdownInterval = setInterval(updateCountdown, 1000);
+    // --- 4. Modal Logic ---
+    const loginBtn = document.getElementById('login-btn');
+    const learnMoreBtn = document.getElementById('learn-more-btn');
+    const authModal = document.getElementById('auth-modal');
+    const aboutModal = document.getElementById('about-modal');
+    const featureModal = document.getElementById('feature-modal');
+    const closeButtons = document.querySelectorAll('.close-modal, .close-trigger');
+    const switchSignup = document.getElementById('switch-to-signup');
+    const switchLogin = document.getElementById('switch-to-login');
+    const loginBox = document.getElementById('login-box');
+    const signupBox = document.getElementById('signup-box');
 
-// Run the function immediately to avoid a 1-second delay on page load
-updateCountdown();
+    if(loginBtn) loginBtn.addEventListener('click', () => authModal.classList.add('active'));
+    if(learnMoreBtn) learnMoreBtn.addEventListener('click', () => aboutModal.classList.add('active'));
+
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            authModal.classList.remove('active');
+            aboutModal.classList.remove('active');
+            featureModal.classList.remove('active');
+        });
+    });
+
+    if(switchSignup) switchSignup.addEventListener('click', () => {
+        loginBox.classList.add('hidden-box');
+        signupBox.classList.remove('hidden-box');
+    });
+    if(switchLogin) switchLogin.addEventListener('click', () => {
+        signupBox.classList.add('hidden-box');
+        loginBox.classList.remove('hidden-box');
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target == authModal) authModal.classList.remove('active');
+        if (e.target == aboutModal) aboutModal.classList.remove('active');
+        if (e.target == featureModal) featureModal.classList.remove('active');
+    });
+
+    // --- 5. Feature Modal Logic ---
+    window.openFeatureModal = function(type) {
+        const title = document.getElementById('feature-title');
+        const desc = document.getElementById('feature-desc');
+        const data = document.getElementById('feature-data');
+        if (type === 'learn') {
+            title.innerText = "Learn by Doing";
+            desc.innerText = "Active recall is the key. Stop watching, start typing.";
+            data.innerHTML = "500+ Coding Challenges";
+        } else if (type === 'projects') {
+            title.innerText = "Project Examples";
+            desc.innerText = "Clone real apps like Netflix, Spotify, and Uber.";
+            data.innerHTML = "50+ Full Stack Projects";
+        } else if (type === 'easy') {
+            title.innerText = "Easy to Follow";
+            desc.innerText = "Step-by-step guides that respect your time.";
+            data.innerHTML = "Beginner Friendly Docs";
+        }
+        featureModal.classList.add('active');
+    }
+
+    // --- 6. Scroll Animation (Staggered) ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                entry.target.style.transitionDelay = `${index * 0.1}s`; 
+                entry.target.classList.add('show');
+            }
+        });
+    });
+    document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
+
+    // --- 7. Counter Animation ---
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200;
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const updateCount = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const count = +counter.innerText;
+                    const inc = target / speed;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc);
+                        setTimeout(updateCount, 20);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+                counterObserver.unobserve(counter);
+            }
+        });
+    });
+    counters.forEach(counter => counterObserver.observe(counter));
+
+    // --- 8. Mobile Menu ---
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    if (hamburger) hamburger.addEventListener('click', () => navLinks.classList.toggle('active'));
+
+    // --- 9. Dark Mode ---
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        const themeIcon = themeToggle.querySelector('i');
+        const body = document.body;
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        });
+    }
+});
