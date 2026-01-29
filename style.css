@@ -1,0 +1,155 @@
+/* Reset some default browser styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Add your image filename here */
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Full viewport height */
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Container for the content box */
+.container {
+    padding: 20px;
+}
+
+/* Main content styling */
+.content {
+    max-width: 800px;
+    padding: 40px;
+    border-radius: 15px;
+    /* Semi-transparent background for readability */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px); /* Cool blur effect */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    font-weight: 300;
+    line-height: 1.6;
+}
+
+/* Countdown Timer Styles */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    min-width: 100px;
+}
+
+.time-box span {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #ffb703; /* Accent color for numbers */
+}
+
+.time-box small {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Newsletter Form Styles */
+.newsletter-form {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.newsletter-form input {
+    padding: 15px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    width: 60%;
+    font-family: inherit;
+}
+
+.newsletter-form button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 30px;
+    background-color: #ffb703;
+    color: #000;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: inherit;
+}
+
+.newsletter-form button:hover {
+    background-color: #e0a100;
+}
+
+/* Social Link Styles */
+.social-links a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #ffb703;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    .countdown {
+        gap: 15px;
+    }
+    .time-box {
+        min-width: 70px;
+        padding: 15px;
+    }
+    .time-box span {
+        font-size: 2rem;
+    }
+    .newsletter-form {
+        flex-direction: column;
+        align-items: center;
+    }
+    .newsletter-form input, .newsletter-form button {
+        width: 100%;
+    }
+}
